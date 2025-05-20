@@ -1,4 +1,5 @@
-import { Text, View } from "react-native";
+import { Link } from "expo-router";
+import { StyleSheet, View } from "react-native";
 
 export default function Index() {
   return (
@@ -9,7 +10,17 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Link style={styles.button} href="/camera">Camera</Link>
+      <Link style={styles.button} href="/filelist">Filelist</Link>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {
+    margin: 10,
+    padding: 10,
+    backgroundColor: "blue",
+    color: "white",
+  },
+});
