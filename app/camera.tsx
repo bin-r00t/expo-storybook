@@ -57,26 +57,6 @@ export default function CameraPage() {
     setFacing((current) => (current === "back" ? "front" : "back"));
   }
 
-  async function saveFile(fileUri: string) {
-    const PATH = "file:///storage/emulated/0/DCIM";
-    const appGallaryPath = PATH + "zip-extractor";
-    // await FileSystem.makeDirectoryAsync(appGallaryPath, {
-    //   intermediates: true,
-    // });
-    console.log(
-      "fileUri ---> ",
-      fileUri,
-      PATH + `/${fileUri.split("/").pop()}`
-    );
-
-    await FileSystem.copyAsync({
-      from: fileUri,
-      to: PATH + `/${fileUri.split("/").pop()}`,
-    });
-
-    console.log("saved...");
-  }
-
   async function handleShutter() {
     const pic = await cameraRef.current?.takePictureAsync({
       pictureRef: true,
@@ -87,18 +67,20 @@ export default function CameraPage() {
         quality: 1,
       });
 
-      const permissions = await StorageAccessFramework.requestDirectoryPermissionsAsync();
+      const permissions =
+        await StorageAccessFramework.requestDirectoryPermissionsAsync();
       if (permissions.granted) {
         try {
           // 获取根目录 URI
           const rootUri = permissions.directoryUri;
           console.log("根目录 URI:", rootUri);
-          
+
           // 创建 ZipExtractor 目录
-          const zipExtractorUri = await StorageAccessFramework.makeDirectoryAsync(
-            rootUri,
-            "ZipExtractor"
-          );
+          const zipExtractorUri =
+            await StorageAccessFramework.makeDirectoryAsync(
+              rootUri,
+              "ZipExtractor"
+            );
           console.log("ZipExtractor 目录 URI:", zipExtractorUri);
 
           // 生成文件名（使用时间戳确保唯一性）
